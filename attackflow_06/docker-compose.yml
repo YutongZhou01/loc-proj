@@ -1,0 +1,38 @@
+version: '3'
+services:
+  frontend:
+    build:
+      dockerfile: ./frontend/Dockerfile
+    container_name: attackflow6-frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+    command: npm run dev
+
+
+  backend:
+    build:
+      dockerfile: ./backend/Dockerfile
+    container_name: attackflow6-backend
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./backend:/backend
+    environment:
+      FLASK_DEBUG: "true"
+  
+  mongodb:
+    image: mongo:latest
+    container_name: attackflow6-mongodb
+    hostname: attackflow6-mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+      - MONGO_INITDB_DATABASE=attackflowdb
+    ports:
+      - "27017:27017"
+    volumes: 
+      - /data/db
+
